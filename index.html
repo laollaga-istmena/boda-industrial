@@ -4,48 +4,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Boda Valeria & Mateo</title>
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@300;400;700&display=swap" rel="stylesheet">
-    <!-- AOS Animations CSS -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    
     <style>
         body { font-family: 'Montserrat', sans-serif; background-color: #050505; color: white; overflow-x: hidden; }
         .titulo { font-family: 'Anton', sans-serif; letter-spacing: 2px; }
         
-        /* Fondo con filtro oscuro elegante */
         .bg-industrial {
-            background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8)), url('1000339875.png');
+            /* URL absoluta a tu repositorio para forzar la carga de la imagen y evitar errores de caché */
+            background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8)), url('https://raw.githubusercontent.com/laollaga-istmena/boda-industrial/main/1000339875.png');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
         }
 
-        /* Botón de música flotante */
         #music-btn {
             position: fixed; bottom: 20px; right: 20px; z-index: 50;
             background-color: rgba(184, 115, 51, 0.8); border-radius: 50%;
-            width: 50px; height: 50px; display: flex; justify-content: center; items-center;
+            width: 50px; height: 50px; display: flex; justify-content: center; align-items: center;
             cursor: pointer; backdrop-filter: blur(5px); transition: transform 0.3s;
         }
         #music-btn:active { transform: scale(0.9); }
         
-        /* Efecto cobre brillante */
         .text-cobre { color: #B87333; text-shadow: 0 0 15px rgba(184, 115, 51, 0.4); }
         .borde-cobre { border-color: #B87333; }
     </style>
 </head>
 <body class="bg-industrial">
 
-    <!-- Audio Oculto -->
+    <!-- Pantalla de Entrada (Desbloquea el audio de forma nativa) -->
+    <div id="pantalla-entrada" class="fixed inset-0 z-[100] bg-black flex flex-col items-center justify-center cursor-pointer transition-opacity duration-1000" onclick="entrarInvitacion()">
+        <p class="titulo text-5xl mb-8 tracking-widest text-white text-center">VALERIA<br>&<br>MATEO</p>
+        <div class="border border-cobre text-cobre px-8 py-3 text-sm font-bold tracking-[0.2em] uppercase animate-pulse">Tocar para entrar</div>
+    </div>
+
+    <!-- URL absoluta a tu audio en GitHub -->
     <audio id="bg-music" loop>
-        <source src="musica.mp3" type="audio/mpeg">
+        <source src="https://raw.githubusercontent.com/laollaga-istmena/boda-industrial/main/musica.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- Botón de Música Flotante -->
-    <div id="music-btn" onclick="toggleMusic()">
+    <div id="music-btn" onclick="toggleMusic()" style="display: none;">
         <svg id="music-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24"><path d="M9 18h-4v-12h4v12zm6-12h-4v12h4v-12zm6 0h-4v12h4v-12z"/></svg>
     </div>
 
@@ -99,46 +98,40 @@
         <a data-aos="zoom-in" data-aos-delay="400" href="https://wa.me/525555555555?text=¡Hola!%20Confirmo%20mi%20asistencia%20a%20la%20boda." target="_blank" class="bg-white text-black px-10 py-5 text-sm font-bold tracking-[0.2em] hover:bg-gray-200 transition-colors duration-300">CONFIRMAR AHORA</a>
     </section>
 
-    <!-- Scripts de Funcionalidad -->
-    <!-- AOS Animations JS -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-        // Iniciar Animaciones
         AOS.init({ once: false, mirror: true });
 
-        // Lógica de Cuenta Regresiva
         const countDownDate = new Date("Nov 1, 2026 19:30:00").getTime();
-        const x = setInterval(function() {
+        setInterval(function() {
             const now = new Date().getTime();
             const distance = countDownDate - now;
-            
-            document.getElementById("days").innerHTML = Math.floor(distance / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
-            document.getElementById("hours").innerHTML = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
-            document.getElementById("minutes").innerHTML = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
-            document.getElementById("seconds").innerHTML = Math.floor((distance % (1000 * 60)) / 1000).toString().padStart(2, '0');
-            
-            if (distance < 0) {
-                clearInterval(x);
-                document.getElementById("days").innerHTML = "00";
-                document.getElementById("hours").innerHTML = "00";
-                document.getElementById("minutes").innerHTML = "00";
-                document.getElementById("seconds").innerHTML = "00";
+            if (distance >= 0) {
+                document.getElementById("days").innerHTML = Math.floor(distance / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
+                document.getElementById("hours").innerHTML = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
+                document.getElementById("minutes").innerHTML = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
+                document.getElementById("seconds").innerHTML = Math.floor((distance % (1000 * 60)) / 1000).toString().padStart(2, '0');
             }
         }, 1000);
 
-        // Lógica de Música
         const music = document.getElementById("bg-music");
         const musicIcon = document.getElementById("music-icon");
         let isPlaying = false;
 
+        function entrarInvitacion() {
+            document.getElementById('pantalla-entrada').style.opacity = '0';
+            setTimeout(() => { document.getElementById('pantalla-entrada').style.display = 'none'; }, 1000);
+            document.getElementById('music-btn').style.display = 'flex';
+            music.play();
+            isPlaying = true;
+        }
+
         function toggleMusic() {
             if (isPlaying) {
                 music.pause();
-                // Icono de Play
                 musicIcon.innerHTML = '<path d="M3 22v-20l18 10-18 10z"/>';
             } else {
                 music.play();
-                // Icono de Pausa
                 musicIcon.innerHTML = '<path d="M9 18h-4v-12h4v12zm6-12h-4v12h4v-12zm6 0h-4v12h4v-12z"/>';
             }
             isPlaying = !isPlaying;
